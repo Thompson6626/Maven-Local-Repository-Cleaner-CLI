@@ -25,22 +25,23 @@ A simple CLI designed to clean up your local Maven repository. It helps you mana
    ```sh
    maven clean package
    ```
-   This will generate a `jar` file in the `target` directory.
+   This will generate a `jar` file in the `target` directory. The default `jar` may be named `MavenCleaner-1.0-SNAPSHOT.jar` , but you can change it.
+   For the sake of example i will rename it maven-cleaner.
 ## Usage
 ## Set Local Repository Directory
 Set the path to your local Maven repository:
 ```sh
-maven-cleaner set-dir /path/to/your/maven/repository
+java -jar target/maven-cleaner set-dir /path/to/your/maven/repository
 ```
 ## Set Default Cleaning Mode
 Set the default cleaning mode (1, 2, or 3):
 ```sh
-maven-cleaner def-mode 1
+java -jar target/maven-cleaner def-mode 1
 ```
 ## Clean Repository
 Start the cleaning process. You can specify the cleaning mode and whether to reverse the comparator:
 ```sh
-maven-cleaner clean [-clm <cleanMode>] [-r <reversed>]
+java -jar target/maven-cleaner clean [-clm <cleanMode>] [-r <reversed>]
 ```
 * `-clm` or `--cleanmode`: Specify the cleaning mode (1, 2, or 3). If not provided, the default cleaning mode will be used.
 * `-r` or `--reversed`: Reverses the comparator (default is `false`).
