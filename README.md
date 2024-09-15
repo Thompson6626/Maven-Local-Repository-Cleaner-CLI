@@ -23,7 +23,7 @@ A simple CLI designed to clean up your local Maven repository. It helps you mana
 2. **Build the Project**
    #### Make sure you have Maven installed. Build the project using:
    ```sh
-   maven clean package
+   mvn clean package
    ```
    This will generate a `jar` file in the `target` directory. The default `jar` may be named `MavenCleaner-1.0-SNAPSHOT.jar` , but you can change it.
    For the sake of example i will rename it maven-cleaner.
