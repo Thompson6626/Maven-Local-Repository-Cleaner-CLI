@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8872da2-cb75-457c-bdeb-faf0acc0b9e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/CleanMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/CleanMethod.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Cleaner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Cleaner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/MavenCleaner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/MavenCleaner.java" afterDir="false" />
     </list>

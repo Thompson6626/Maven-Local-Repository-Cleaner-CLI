@@ -13,7 +13,7 @@ import java.util.Properties;
 
 
 @Command(name = "Maven Cleaner", mixinStandardHelpOptions = true, version = "1.0",
-        description = "A CLI tool to clean the local repository.",
+        description = "A CLI tool to clean the maven local repository.",
         subcommands = CommandLine.HelpCommand.class
 )
 public class MavenCleaner{
@@ -75,7 +75,6 @@ public class MavenCleaner{
 
     private void createIfNotExist(String path){
         try{
-            // Ensure the asdasdqasd directory exists
             var dir = new File(path);
 
             if (!dir.exists()) dir.mkdirs(); // Create the directory if it doesn't exist
@@ -121,7 +120,7 @@ public class MavenCleaner{
             ) Integer cleanMode,
             @Option(
                     names = {"-r", "--reversed"},
-                    description = "Reverses the comparator",
+                    description = "Reverses the comparator of the cleaning mode",
                     defaultValue = "False"
             ) boolean reversed
             ){
@@ -145,7 +144,44 @@ public class MavenCleaner{
         // Create cleaner
         var cleaner = new Cleaner(directory, cleanMode, reversed);
 
-        cleaner.clean();
+        Thread spinner = startSpinner();
+
+        try {
+            cleaner.clean();  // Perform the cleaning
+        } finally {
+            stopSpinner(spinner);  // Ensure the spinner stops even if an error occurs
+        }
+
+        System.out.println("\nCleaning completed successfully!");
+    }
+
+    private Thread startSpinner() {
+        Thread spinner = new Thread(() -> {
+            String[] spinnerChars = {"|", "/", "-", "\\"};  // Spinner animation frames
+            int index = 0;
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    System.out.print("\rCleaning in progress... " + spinnerChars[index++ % spinnerChars.length]);
+                    Thread.sleep(100);  // Adjust this for animation speed
+                }
+            } catch (InterruptedException e) {
+                // Thread interrupted, stop the spinner
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        spinner.start();  // Start the spinner thread
+        return spinner;
+    }
+
+    private void stopSpinner(Thread spinner) {
+        spinner.interrupt();  // Interrupt the spinner thread to stop the animation
+        try {
+            spinner.join();  // Wait for the spinner thread to finish
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        System.out.print("\rCleaning completed.");  // Clear the spinner line
     }
 }
 
