@@ -17,7 +17,7 @@ public class Utils {
     public static FileTime getLastModifiedDate(File file) throws IOException {
         return getProperty(file, BasicFileAttributes::lastModifiedTime);
     }
-    public static <T> T getProperty(
+    private static <T> T getProperty(
             File file ,
             Function<BasicFileAttributes,T> attributesResolver
     ) throws IOException {
