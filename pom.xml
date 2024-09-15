@@ -21,6 +21,7 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>maven-cleaner</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
