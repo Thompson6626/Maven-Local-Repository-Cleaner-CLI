@@ -11,6 +11,12 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
+    private static final Pattern NUMERIC_VERSION_PATTERN = Pattern.compile("^\\d+(\\.\\d+)*$");
+
+    public static boolean isNumericVersion(String version) {
+        return NUMERIC_VERSION_PATTERN.matcher(version).matches();
+    }
+
     public static FileTime getLastAccessedTime(File file) throws IOException {
         return getProperty(file, BasicFileAttributes::lastAccessTime);
     }
@@ -27,11 +33,6 @@ public class Utils {
         return attributesResolver.apply(attributes);
     }
 
-    private static final Pattern NUMERIC_VERSION_PATTERN = Pattern.compile("^\\d+(\\.\\d+)*$");
-
-    public static boolean isNumericVersion(String version) {
-        return NUMERIC_VERSION_PATTERN.matcher(version).matches();
-    }
 
 
 }

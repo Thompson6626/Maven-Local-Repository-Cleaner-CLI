@@ -1,9 +1,13 @@
 package org.example;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.example.Utils.isNumericVersion;
+
 
 public class Cleaner {
 
@@ -46,29 +50,26 @@ public class Cleaner {
                     break;
                 }
             }
-            for(String inNames : FILES_INSIDE_VERSION_FOLDER){
-                if(file.getName().endsWith(inNames)){
-                    return true;
-                }
+            if (Arrays.stream(FILES_INSIDE_VERSION_FOLDER)
+                    .anyMatch(file.getName()::endsWith)
+            ){
+                return true;
             }
         }
         // If we are in a versions folder
         if (isVersionsFolder){
 
-            Queue<File> pq = new PriorityQueue<>(COMPARATOR);
-
-            Arrays.stream(inFiles)
-                    .filter((e) -> isNumericVersion(e.getName()))
-                    .forEach(pq::offer);
+            Queue<File> versionFiles = Arrays.stream(inFiles)
+                    .filter(e -> isNumericVersion(e.getName()))
+                    .collect(Collectors.toCollection(() -> new PriorityQueue<>(COMPARATOR)));
 
             // Only the one with the highest priority remains
-            var survivor = pq.poll();
+            var survivor = versionFiles.poll();
 
-            while(!pq.isEmpty()){
-                var delFile = pq.poll();
-                boolean result = deleteDirectory(delFile);
-                if (!result){
-                    System.err.println("Failed to delete: " + delFile.getPath());
+            while(!versionFiles.isEmpty()){
+                var fileToDelete = versionFiles.poll();
+                if (!deleteDirectory(fileToDelete)){
+                    System.err.println("Failed to delete: " + fileToDelete.getPath());
                 }
             }
         }
@@ -82,16 +83,27 @@ public class Cleaner {
      * @param directory
      */
     private boolean deleteDirectory(File directory) {
-        if (directory.isDirectory()) {
-            File[] files = directory.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    if(file.isDirectory()) deleteDirectory(file);
-                    else file.delete();
-                }
-            }
+        if (!directory.exists() || !directory.isDirectory()) {
+            System.err.println("Error: Directory does not exist or is not a directory.");
+            return false;
         }
-        return directory.delete();
+
+        try (var paths = Files.walk(directory.toPath())) {
+            // Sort paths in reverse order for safe deletion
+            paths.sorted(Comparator.reverseOrder())
+                    .forEach(path -> {
+                        try {
+                            Files.delete(path); // Delete the file or directory
+                        } catch (IOException e) {
+                            System.err.println("Failed to delete " + path + ": " + e.getMessage());
+                        }
+                    });
+        } catch (IOException e) {
+            System.err.println("Error while deleting directory: " + e.getMessage());
+            return false;
+        }
+
+        return true; // Directory deleted successfully
     }
 
 }

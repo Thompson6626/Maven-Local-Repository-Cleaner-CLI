@@ -20,7 +20,6 @@ public enum CleanMethod {
         }
         return Integer.compare(bb.length, aa.length);
     }),
-
     LAST_ACCESSED((a,b) -> {
         try {
             return getLastAccessedTime(b).compareTo(getLastAccessedTime(a));
